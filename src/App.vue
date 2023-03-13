@@ -4,7 +4,7 @@
       <div class="header-container">
         <div class="header-container-content">
           <a class="header-container-logo" href="/" rel="noopener noreferrer">
-            <img src="/blogv.png" style="width: 60px;" />
+            <img src="/logo.png" style="width: 60px;" />
           </a>
           <div class="header-container-userinfo">
             <template v-if="!sysUserName">
@@ -87,7 +87,6 @@
             </template>
             <template v-else>
               <a
-                href="https://ids.neters.club/"
                 class="header-container-banner-item-btn"
               >{{ sysUserName }}</a>
               <a
@@ -114,7 +113,7 @@
 <script>
 import applicationUserManager from "./Auth/applicationusermanager";
 import userAuth from "./Auth/UserAuth";
-
+import store from "./store";
 
 export default {
   name: "app",
@@ -173,7 +172,7 @@ export default {
       try {
         window.localStorage.removeItem("USER_NAME");
         await applicationUserManager.logout();
-        this.$store.commit("saveToken", "");
+        store.commit("saveToken", "");
       } catch (error) {
         console.log(error);
         this.$root.$emit("show-snackbar", { message: error });
@@ -183,22 +182,30 @@ export default {
     login2() {
       const loginForm = this.$refs.form.model;
       
-      this.$api.post("Blog/login", { userName: loginForm.userName,password:loginForm.password }, r => {
+      this.$api.post("/toLogin", { userName: loginForm.userName,password:loginForm.password }, r => {
         console.log(r)
-
-        this.dialogVisible = false;
-        this.dialogVisibleLogin = false;
-        window.localStorage.setItem("USER_EXP", 30);
-        window.localStorage.setItem("USER_NAME", loginForm.userName);
+        if(r.code == 200){//将token和user保存到localStorage中
+          store.commit('setToken',r.token)
+          store.commit('setUsername',r.staff)
+          //跳转到登录成功后的页面
+          //获取本地存储中的staff
+          // vm.staff=JSON.parse(localStorage.getItem('staff'))
+          this.dialogVisible = false;
+          this.dialogVisibleLogin = false;
+          window.localStorage.setItem("USER_NAME", loginForm.userName);
+        }
+        else{
+          alert(response.data.msg)
+        }  
       });
     },
 
     logout2() {
       try {
-        debugger
         window.localStorage.removeItem("USER_NAME");
-        this.$store.commit("saveToken", "");
-        window.localStorage.setItem("USER_EXP", 0);
+        this.$store.commit("logout", "");
+        window.localStorage.removeItem("staff");
+        window.localStorage.removeItem("token");
         this.sysUserName="";
       } catch (error) {
         console.log(error);

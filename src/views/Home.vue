@@ -6,9 +6,9 @@
                 <div class="ad whitebg"></div>
                 <template v-if="isShow" >
                     <div class="whitebg bloglist">
-                        <h2 class="htitle">最新博文
+                        <h2 class="htitle">最新树洞 | 最热树洞
                             <router-link :to="'/Editor'" class="prev" style="float:right;" rel="prev">
-                                Add My Study
+                                新建树洞
                             </router-link>
                         </h2>
                         <ul>

@@ -60,7 +60,13 @@ const router = new Router({
       name: "home2",
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/Home2.vue")
-    }
+    },
+    {
+      path: "/Chat",
+      name: "Chat",
+      component: () =>
+      import(/* webpackChunkName: "about" */ "./views/Chat2.vue")
+    },
   ]
 });
 

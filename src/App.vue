@@ -90,7 +90,7 @@
                 class="header-container-banner-item-btn"
               >{{ sysUserName }}</a>
               <a
-                href="/Editor"
+                href="/Chat"
                 class="header-container-user-btn header-container-hv header-container-user-size _1YbC5u"
                 role="button"
                 tabindex="-1"
